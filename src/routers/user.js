@@ -20,20 +20,6 @@ router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
 });
 
-router.get("/users/:id", async (req, res) => {
-  const _id = req.params.id;
-
-  try {
-    const user = await User.findById(_id);
-    if (!user) {
-      return res.status(404).send();
-    }
-    res.send(user);
-  } catch (e) {
-    res.status(500).send();
-  }
-});
-
 /*---------------- CREATE NEW USER ----------------*/
 
 router.post("/users", async (req, res) => {
@@ -92,11 +78,9 @@ router.post("/users/logoutAll", auth, async (req, res) => {
 
 /*-------------------- UPDATE USER --------------------*/
 
-router.patch("/users/:id", async (req, res) => {
-  const _id = req.params.id;
-
+router.patch("/users/me", auth, async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(_id, req.body, {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -111,15 +95,10 @@ router.patch("/users/:id", async (req, res) => {
 
 /*-------------------- DELETE USER --------------------*/
 
-router.delete("/users/:id", async (req, res) => {
-  const _id = req.params.id;
-
+router.delete("/users/me", auth, async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(_id);
-    if (!user) {
-      return res.status(404).send();
-    }
-    res.send(user);
+    await req.user.remove();
+    res.send(req.user);
   } catch (e) {
     res.status(500).send();
   }
