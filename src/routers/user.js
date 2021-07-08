@@ -3,6 +3,8 @@ const router = new express.Router();
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 
+/*--------------- READ ALL USERS ---------------*/
+
 router.get("/users", auth, async (req, res) => {
   try {
     const users = await User.find({});
@@ -11,6 +13,8 @@ router.get("/users", auth, async (req, res) => {
     es.status(500).send(err);
   }
 });
+
+/*------------------ READ USER ------------------*/
 
 router.get("/users/me", auth, async (req, res) => {
   res.send(req.user);
@@ -30,6 +34,8 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
+/*---------------- CREATE NEW USER ----------------*/
+
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
 
@@ -41,6 +47,8 @@ router.post("/users", async (req, res) => {
     res.status(400).send();
   }
 });
+
+/*------------------- LOGIN USER -------------------*/
 
 router.post("/users/login", async (req, res) => {
   try {
@@ -55,6 +63,8 @@ router.post("/users/login", async (req, res) => {
   }
 });
 
+/*------------------- LOGOUT USER -------------------*/
+
 router.post("/users/logout", auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
@@ -68,6 +78,8 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
+/*----------------- LOGOUT ALL USERS -----------------*/
+
 router.post("/users/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
@@ -77,6 +89,8 @@ router.post("/users/logoutAll", auth, async (req, res) => {
     res.status(500).send(e);
   }
 });
+
+/*-------------------- UPDATE USER --------------------*/
 
 router.patch("/users/:id", async (req, res) => {
   const _id = req.params.id;
@@ -94,6 +108,8 @@ router.patch("/users/:id", async (req, res) => {
     res.status(400).send();
   }
 });
+
+/*-------------------- DELETE USER --------------------*/
 
 router.delete("/users/:id", async (req, res) => {
   const _id = req.params.id;

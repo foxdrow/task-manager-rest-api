@@ -2,6 +2,8 @@ const express = require("express");
 const router = new express.Router();
 const Task = require("../models/task");
 
+/*------------------ READ TASK ------------------*/
+
 router.get("/tasks/:id", async (req, res) => {
     const _id = req.params.id;
     try {
@@ -14,6 +16,8 @@ router.get("/tasks/:id", async (req, res) => {
       res.status(500).send();
     }
   });
+
+  /*--------------- READ ALL TASKS ---------------*/
   
   router.get("/tasks", async (req, res) => {
     try {
@@ -23,6 +27,8 @@ router.get("/tasks/:id", async (req, res) => {
       res.status(500).send();
     }
   });
+
+  /*----------------- CREATE TASK -----------------*/
   
   router.post("/tasks", async (req, res) => {
     const task = new Task(req.body);
@@ -34,6 +40,8 @@ router.get("/tasks/:id", async (req, res) => {
       res.status(400).send();
     }
   });
+
+  /*------------------ UPDATE TASK -----------------*/
   
   router.patch("/tasks/:id", async (req, res) => {
     const _id = req.params.id;
@@ -51,6 +59,8 @@ router.get("/tasks/:id", async (req, res) => {
       res.status(400).send();
     }
   });
+
+  /*------------------ DELETE TASK ------------------*/
   
   router.delete("/tasks/:id", async (req, res) => {
     const _id = req.params.id;
