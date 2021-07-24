@@ -2,6 +2,7 @@ const express = require("express");
 const router = new express.Router();
 const User = require("../models/user");
 const auth = require("../middleware/auth");
+const multer = require("multer");
 
 /*--------------- READ ALL USERS ---------------*/
 
@@ -64,7 +65,7 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
-/*----------------- LOGOUT ALL USERS -----------------*/
+/*-------------------- LOGOUT ALL --------------------*/
 
 router.post("/users/logoutAll", auth, async (req, res) => {
   try {
@@ -102,6 +103,16 @@ router.delete("/users/me", auth, async (req, res) => {
   } catch (e) {
     res.status(500).send();
   }
+});
+
+/*-------------------- USER AVATAR --------------------*/
+
+const upload = multer({
+  dest: "avatars",
+});
+
+router.post("/users/me/avatar", upload.single('avatar'), (req, res) => {
+  res.send();
 });
 
 module.exports = router;
